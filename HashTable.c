@@ -205,9 +205,9 @@ bool HashTable_Find(HashTable *table,
   if (FindKey(chain, key, &kv)) {
     // if the key is found, copy the key-value pair
     *keyvalue = *kv;
-    return true;  // return true to indicate we found the key
+    return true;  // return true since we found the key
   }
-  return false;  // if the key isn't found, return false
+  return false;  // return false since we did not find the key
 }
 
 bool HashTable_Remove(HashTable *table,
