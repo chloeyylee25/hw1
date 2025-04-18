@@ -308,7 +308,7 @@ bool LLIterator_Remove(LLIterator *iter,
 
   // free the node that was deleted
   free(node);
-  // update the num_elements field since the node was successfully deleted
+  // update the num_elements field since the node was deleted
   list->num_elements--;
   return true;  // you may need to change this return value
 }
