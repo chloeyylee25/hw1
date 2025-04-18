@@ -119,7 +119,8 @@ int HashTable_NumElements(HashTable *table) {
 }
 
 // helper function to find a key in a chain and return its key-value pair
-// parameters: the chain to traverse through, the key we are wanting to find, and a pointer to the key-value pair
+// parameters: the chain to traverse through, the key we are wanting to find,
+            // and a pointer to the key-value pair
 // returns true if the key is found, false otherwise
 static bool FindKey(LinkedList *chain, HTKey_t key, HTKeyValue_t **kv_ptr) {
   LLIterator *it;
@@ -134,9 +135,13 @@ static bool FindKey(LinkedList *chain, HTKey_t key, HTKeyValue_t **kv_ptr) {
       LLIterator_Free(it);
       return true;  // return true since the key was found
     }
-    LLIterator_Next(it);  // if the current key is not the key we are looking for, move the iterator to the next element in the chain to keep traversing
+    // if the current key is not the key we are looking for,
+    // move the iterator to the next element in the chain to keep traversing
+    LLIterator_Next(it);
   }
-  LLIterator_Free(it);  // if we reach the end of the chain and the key is not found, free the iterator since the search is over
+  // if we reach the end of the chain and the key is not found,
+  // free the iterator since the search is over
+  LLIterator_Free(it);
   return false;  // return false since the key was not found
 }
 
@@ -166,16 +171,21 @@ bool HashTable_Insert(HashTable *table,
     // if the key is found, replace the value
     *oldkeyvalue = *kv;  // copy the old key-value pair
     kv->value = newkeyvalue.value;  // update with the new value
-    return true;  // return true since the key was found and the old value was replaced with the new value
+    // return true since the key was found
+    // and the old value was replaced with the new value
+    return true;
   }
 
-  // if the key is not found, create a new key-value pair and insert it into the chain
+  // if the key is not found, create a new key-value pair
+  // and insert it into the chain
   kv = (HTKeyValue_t*)malloc(sizeof(HTKeyValue_t));
   Verify333(kv != NULL);
   *kv = newkeyvalue;
   LinkedList_Push(chain, (LLPayload_t)kv);
-  table->num_elements++;  // update num_elements to show a new key-value pair was added
-  return false;  // return false because there was no existing pair with that key
+  // update num_elements to show a new key-value pair was added
+  table->num_elements++;
+  // return false because there was no existing pair with that key
+  return false;
 }
 
 bool HashTable_Find(HashTable *table,
@@ -227,12 +237,20 @@ bool HashTable_Remove(HashTable *table,
         // the current element is the one we want to remove
         LLIterator_Remove(it, free);
         LLIterator_Free(it);  // free the iterator since we're done
-        table->num_elements--;  // update num_elements to show we removed an element from the chain
-        return true;  // return true since the key was found, and therefore the associated key-value pair was returned to the caller via that keyvalue return parameter and the key-value pair was removed from the HashTable
+        // update num_elements to show we removed an element from the chain
+        table->num_elements--;
+        // return true since the key was found, and therefore the associated
+        // key-value pair was returned to the caller via that keyvalue return
+        // parameter and the key-value pair was removed from the HashTable
+        return true;
       }
-      LLIterator_Next(it);  // if the current element is not the one we want to remove, continue iterating through the chain
+      // if the current element is not the one we want to remove,
+      // continue iterating through the chain
+      LLIterator_Next(it);
     }
-    LLIterator_Free(it);  // if we reach the end of the chain and the goal element is not found, free the iterator since we are done
+    // if we reach the end of the chain and the goal element is not found,
+    // free the iterator since we are done
+    LLIterator_Free(it);
   }
   return false;  // return false since the key wasn't found in the HashTable
 }
@@ -287,7 +305,7 @@ bool HTIterator_IsValid(HTIterator *iter) {
 
   // STEP 4: implement HTIterator_IsValid.
 
-  // checking if the iterator is valid and returning false if it is invalid or NULL
+  // check if the iterator is valid and returning false if it is invalid/NULL
   if (iter->bucket_idx == INVALID_IDX || iter->bucket_it == NULL) {
     return false;
   }
@@ -308,7 +326,7 @@ bool HTIterator_Next(HTIterator *iter) {
 
   // trying to iterate through the current bucket
   if (LLIterator_Next(iter->bucket_it)) {
-    return true;  // successfuly moved to the next element in the current bucket
+    return true;  // successfuly moved to the next element in current bucket
   }
 
   // once we reach the end of the current bucket, free the iterator
@@ -321,7 +339,7 @@ bool HTIterator_Next(HTIterator *iter) {
       // found a non-empty bucket
       iter->bucket_idx = i;  // update the bucket index
       iter->bucket_it = LLIterator_Allocate(iter->ht->buckets[i]);
-      return true;  // successfully moved to the first element in the new bucket we found
+      return true;  // successfully moved to the first element in the new bucket
     }
   }
 
